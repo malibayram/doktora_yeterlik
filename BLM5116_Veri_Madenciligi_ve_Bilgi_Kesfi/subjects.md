@@ -33,36 +33,37 @@
 
 6.  [Statistical Classification Methods, Naïve Bayesian Classification](04NaiveBayes.pdf)
 
-    - Measures of Classification Performance
+        - Measures of Classification Performance
 
-      - Confusion Matrix:
-        | Actual/Predicted | Positive | Negative |
-        |------------------|----------|----------|
-        | Positive | TP | FN |
-        | Negative | FP | TN |
+          - Confusion Matrix:
+            | Actual/Predicted | Positive | Negative |
+            |------------------|----------|----------|
+            | Positive | TP | FN |
+            | Negative | FP | TN |
 
-      | Measure     | Formula                                       | Description                                                                   |
-      | ----------- | --------------------------------------------- | ----------------------------------------------------------------------------- |
-      | Accuracy    | (TP + TN) / (TP + TN + FP + FN)               | Proportion of correct predictions among the total number of cases evaluated.  |
-      | Error Rate  | (FP + FN) / (TP + TN + FP + FN)               | Proportion of incorrect predictions among the total number of cases evaluated |
-      | Sensitivity | TP / (TP + FN)                                | Proportion of positive cases correctly identified                             |
-      | Specificity | TN / (TN + FP)                                | Proportion of negative cases correctly identified                             |
-      | Precision   | TP / (TP + FP)                                | Proportion of positive predictions that are correct                           |
-      | Recall      | TP / (TP + FN)                                | Proportion of positive cases that are correctly identified                    |
-      | F-Measure   | 2 _ Precision _ Recall / (Precision + Recall) | Harmonic mean of precision and recall                                         |
-      | F1-Score    | 2 _ Precision _ Recall / (Precision + Recall) | Harmonic mean of precision and recall                                         |
-      | FP Rate α   | FP / (FP + TN) [1 - specifity]                | Probability of incorrectly rejecting the null hypothesis                      |
-      | FN Rate β   | FN / (TP + FN) [1 - sensitivity]              | Probability of incorrectly accepting the null hypothesis                      |
-      | Power       | 1 - β                                         | Probability of correctly rejecting the null hypothesis                        |
+    "
+    | Measure | Formula | Description |
+    | ----------- | --------------------------------------------- | ----------------------------------------------------------------------------- |
+    | Accuracy | (TP + TN) / (TP + TN + FP + FN) | Proportion of correct predictions among the total number of cases evaluated. |
+    | Error Rate | (FP + FN) / (TP + TN + FP + FN) | Proportion of incorrect predictions among the total number of cases evaluated |
+    | Sensitivity | TP / (TP + FN) | Proportion of positive cases correctly identified |
+    | Specificity | TN / (TN + FP) | Proportion of negative cases correctly identified |
+    | Precision | TP / (TP + FP) | Proportion of positive predictions that are correct |
+    | Recall | TP / (TP + FN) | Proportion of positive cases that are correctly identified |
+    | F-Measure | 2 _ Precision _ Recall / (Precision + Recall) | Harmonic mean of precision and recall |
+    | F1-Score | 2 _ Precision _ Recall / (Precision + Recall) | Harmonic mean of precision and recall |
+    | FP Rate α | FP / (FP + TN) [1 - specifity] | Probability of incorrectly rejecting the null hypothesis |
+    | FN Rate β | FN / (TP + FN) [1 - sensitivity] | Probability of incorrectly accepting the null hypothesis |
+    | Power | 1 - β | Probability of correctly rejecting the null hypothesis |
 
-    - X, sınıf etiketi bilinmeyen bir veri örneği olsun.
-    - H, veri örneğinin belirli bir sınıfa C ait olduğu hipotezidir.
-    - Gözlemlenen veri örneği X'in verildiği durumda H'nin geçerlilik olasılığı olan P(H/X) hesaplanmak istenir.
-    - P(H/X), X verildikten sonra hipoteze olan güvenimizi temsil eder.
-    - Öte yandan, P(H) herhangi bir örnekteki veriye bakılmaksızın H'nin öncül olasılığıdır.
-    - P(H|X) ise öncül olasılıktan daha fazla bilgiye dayanarak hesaplanan sonrasal olasılıktır.
-    - Bayes Teoremi, olasılıklar P(H), P(X) ve P(X|H) kullanarak sonrasal olasılık P(H|X) hesaplamak için bir yöntem sağlar.
-    - Temel ilişki şöyledir: `P(H|X) = P(X|H) * P(H) / P(X)`
+        - X, sınıf etiketi bilinmeyen bir veri örneği olsun.
+        - H, veri örneğinin belirli bir sınıfa C ait olduğu hipotezidir.
+        - Gözlemlenen veri örneği X'in verildiği durumda H'nin geçerlilik olasılığı olan P(H/X) hesaplanmak istenir.
+        - P(H/X), X verildikten sonra hipoteze olan güvenimizi temsil eder.
+        - Öte yandan, P(H) herhangi bir örnekteki veriye bakılmaksızın H'nin öncül olasılığıdır.
+        - P(H|X) ise öncül olasılıktan daha fazla bilgiye dayanarak hesaplanan sonrasal olasılıktır.
+        - Bayes Teoremi, olasılıklar P(H), P(X) ve P(X|H) kullanarak sonrasal olasılık P(H|X) hesaplamak için bir yöntem sağlar.
+        - Temel ilişki şöyledir: `P(H|X) = P(X|H) * P(H) / P(X)`
 
 7.  [Clustering Methods: K-Means](06K-means-clustering.pdf)
 

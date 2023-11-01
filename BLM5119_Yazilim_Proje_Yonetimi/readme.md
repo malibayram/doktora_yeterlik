@@ -2,7 +2,7 @@
 
 ## Yapılacaklar
 
-- [ ] Sunumlar bulunacak
+- [x] Sunumlar bulunacak
 - [ ] Sunumlar okunacak
 
 Ders Öğrenim Çıktıları
