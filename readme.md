@@ -40,8 +40,10 @@ Her dersten en az 2 soru hazırlanır. Sınav esnasında **öğrenci seçtiği 7
 
 - [BLM5105 Doğal Dil İşlemeye Kavramsal Bakış](BLM5105_Dogal_Dil_Islemeye_Kavramsal_Bakis)
   - [Prof. Dr. Banu Diri](https://avesis.yildiz.edu.tr/diri/documents)
-- [BLM5106 İleri Algoritma Analizi ve Tasarımı](BLM5106_Ileri_Algoritma_Analizi_ve_Tasarimi)
-  - [Dr. Hafiza İrem Türkmen Çilingir](https://avesis.yildiz.edu.tr/irem/documents)
+- ~~[BLM5106 İleri Algoritma Analizi ve Tasarımı](BLM5106_Ileri_Algoritma_Analizi_ve_Tasarimi)~~
+  - ~~[Dr. Hafiza İrem Türkmen Çilingir](https://avesis.yildiz.edu.tr/irem/documents)~~
+- [BLM6112 İleri Bilgisayar Mimarisi](BLM6112_Ileri_Bilgisayar_Mimarisi)
+  - [Prof. Dr. Nizamettin Aydın](https://www3.yildiz.edu.tr/~naydin/na_DaP.htm)
 - [BLM5111 Nesneye Dayalı Tasarım ve Modelleme](BLM5111_Nesneye_Dayali_Tasarim_ve_Modelleme)
   - [Dr. Yunus Emre Selçuk](https://avesis.yildiz.edu.tr/yselcuk/dokumanlar)
 - [BLM5116 Veri Madenciliği ve Bilgi Keşfi](BLM5116_Veri_Madenciligi_ve_Bilgi_Kesfi)

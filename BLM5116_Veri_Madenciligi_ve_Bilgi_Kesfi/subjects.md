@@ -12,7 +12,10 @@
 
 2.  Data Mining Concepts and Data Preprocessing Techniques
 
-    > Bu bölümde veri madenciliği kavramları ve veri ön işleme teknikleri anlatılmaktadır.
+    - Feature Selection
+    - Dimensionality Reduction
+    - Normalization
+    - Data subsetting
 
 3.  [Data Reduction and Data Discretization-I](03DataReduction.pdf)
 
