@@ -7,13 +7,13 @@
 
 Konular
 
-- [Veri Sıkıştırma Nedir ?]('Veri Sıkıştırma - Bilgi Teorisi - Bölüm 4.pdf')
-- [Hata Bulma ve Düzeltme]('Veri Sıkıştırma - Hata Bulma ve Düzeltme - Bölüm 2.pdf')
-- [Temel Teknikler (Sezgisel Yöntemler, Run Lenght Coding, Move-To-Front)]('Veri Sıkıştırma - Temel Teknikler-Bölüm 3.pdf')
+- [Veri Sıkıştırma Nedir ?](Veri_Sıkıştırma_-_Bilgi_Teorisi_-_Bölüm_4.pdf)
+- [Hata Bulma ve Düzeltme](Veri_Sıkıştırma_-_Hata_Bulma_ve_Düzeltme_-_Bölüm_2.pdf)
+- [Temel Teknikler (Sezgisel Yöntemler, Run Lenght Coding, Move-To-Front)](Veri_Sıkıştırma_-_Temel_Teknikler-Bölüm_3.pdf)
 - Statik Kodlar (Prefix, Colomb)
-- [İstatistiksel Yöntemler (Shannon Fano, Huffman ve Türevleri, MNP ve Türevleri, Aritmetik, PPM Kodlama)]('Veri Sıkıştırma -İstatistiksel Yöntemler-Bölüm 5.3')
-- [Sözlüksel Yöntemler (LZ ve Türevleri)]('Veri Sıkıştırma - Sözlük Kullanan Yöntemler-Bölüm 6.pdf')
-- [Görüntü Sıkıştırma]('Veri Sıkıştırma - Görüntü Sıkıştırma-Bölüm 7.pdf')
+- [İstatistiksel Yöntemler (Shannon Fano, Huffman ve Türevleri, MNP ve Türevleri, Aritmetik, PPM Kodlama)](Veri_Sıkıştırma_-İstatistiksel_Yöntemler-Bölüm_5.3.pdf)
+- [Sözlüksel Yöntemler (LZ ve Türevleri)](Veri_Sıkıştırma_-_Sözlük_Kullanan_Yöntemler-Bölüm_6.pdf)
+- [Görüntü Sıkıştırma](Veri_Sıkıştırma_-_Görüntü_Sıkıştırma-Bölüm_7.pdf)
 
 Ders Öğrenim Çıktıları
 
@@ -40,3 +40,14 @@ Hafta Konular Ön Hazırlık
 13. Seminer – 2 Sözlü Sunum
 14. Seminer – 3 Sözlü Sunum
 15. Final
+
+<!--
+
+change file names to ascii and without spaces
+
+
+```bash
+for f in *; do mv "$f" `echo $f | tr ' ' '_' | tr -cd '[[:alnum:]]._-'` ; done
+```
+
+ -->
