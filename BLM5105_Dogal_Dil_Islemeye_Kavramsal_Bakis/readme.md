@@ -3,7 +3,7 @@
 ## Yapılacaklar
 
 - [x] Sunumlar bulunacak
-- [ ] Sunumlar okunacak
+- [x] Sunumlar okunacak
 
 Ders Öğrenim Çıktıları
 
@@ -46,5 +46,5 @@ Konular
 - [x] [Metin Sınıflandırma (Text Classification)](11-_Text-20Categorization-11.pdf)
 - [x] [Bilgiye Erişim Sistemleri (Information Retrieval)](13-_Information-20Retrieval-13.pdf)
 - [x] [Bilgi Çıkarımı (Information Extraction)](14-_Bilgi-20-C3-87-C4-B1kar-C4-B1m-C4-B1-14.pdf)
-- [ ] [Eşdizimlilik (Collocation)](15-_Collocation-15.pdf)
-- [ ] [Soru Cevaplama Sistemleri (Question Answering)](16-_Question-26amp-3BAnswering-16.pdf)
+- [x] [Eşdizimlilik (Collocation)](15-_Collocation-15.pdf)
+- [x] [Soru Cevaplama Sistemleri (Question Answering)](16-_Question-26amp-3BAnswering-16.pdf)

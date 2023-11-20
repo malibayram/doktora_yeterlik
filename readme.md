@@ -57,7 +57,7 @@ Her dersten en az 2 soru hazırlanır. Sınav esnasında **öğrenci seçtiği 7
 
 ## Yapılacaklar
 
-- [ ] Her bir ders için 14 haftalık konu listesi bulunup ilgili klasördeki readme.md dosyasına eklenecek.
+- [x] Her bir ders için 14 haftalık konu listesi bulunup ilgili klasördeki readme.md dosyasına eklenecek.
 - [ ] Her dersin PDF/PPT sunumları bulunup klasöre eklenecek ve çalışırken önce bu sunumlar baştan sonra okunacak, okunan her sunum için ilgili konunun checkbox'ı işaretlenecek.
 - [ ] Her dersin vize ve final sınav soruları bulunup klasöre eklenecek ve sunumlar çalışıldıktan sonra bu sorular çözülecek, çözülen her soru için ilgili konunun checkbox'ı işaretlenecek.
 - [ ] Ek kaynakların linkleri bulunup readme.md dosyasına eklenecek. (Olabildikçe az ve öz kaynakla çok kapsamlı çalışılacak. Kaynak çöplüğü oluşturulmayacak.)
