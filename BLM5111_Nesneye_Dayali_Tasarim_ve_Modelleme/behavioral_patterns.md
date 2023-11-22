@@ -14,7 +14,7 @@
 10. **[Visitor Pattern:](#visitor-pattern)** Bir nesne yapısında dolaşmayı ve her nesne üzerinde bir işlem yapmayı sağlayan bir kalıptır.
 
 #### Iterator Pattern
-
+ Testt
 > Class Diagram:
 
 ```mermaid
