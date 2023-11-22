@@ -130,6 +130,8 @@ public class Demo {
 
 [Go Top](#structural-patterns-yapısal-kalıplar)
 
+---
+
 #### Decorator Pattern
 
 > Class Diagram:
@@ -274,6 +276,8 @@ public class Demo {
 
 [Go Top](#structural-patterns-yapısal-kalıplar)
 
+---
+
 #### Facade Pattern
 
 > Class Diagram:
@@ -407,6 +411,8 @@ public class Demo {
 ```
 
 [Go Top](#structural-patterns-yapısal-kalıplar)
+
+---
 
 #### Proxy Pattern
 
@@ -567,6 +573,8 @@ public class Demo {
 ```
 
 [Go Top](#structural-patterns-yapısal-kalıplar)
+
+---
 
 #### Bridge Pattern
 
@@ -886,6 +894,8 @@ public class Demo {
 
 [Go Top](#structural-patterns-yapısal-kalıplar)
 
+---
+
 #### Composite Pattern
 
 > Class Diagram:
@@ -1003,6 +1013,8 @@ public class Demo {
 ```
 
 [Go Top](#structural-patterns-yapısal-kalıplar)
+
+---
 
 #### Flyweight Pattern
 

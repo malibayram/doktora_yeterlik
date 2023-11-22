@@ -13,6 +13,8 @@
 
 - [UML Cheetsheet 2](https://khalilstemmler.com/articles/uml-cheatsheet/)
 
+- [Mermaid](https://mermaid.js.org/syntax/classDiagram.html) Kalıplardaki sınıf diyagramlarını çizmek için kullandığım işaret dili aracı.
+
 ## Kalıplar
 
 ### [Creational Patterns (Yaratımsal Kalıplar)](creational_patterns.md)

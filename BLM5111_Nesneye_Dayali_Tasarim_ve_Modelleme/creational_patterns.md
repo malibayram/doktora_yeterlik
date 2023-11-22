@@ -128,6 +128,8 @@ public class Demo {
 
 [Go Top](#creational-patterns-yaratımsal-kalıplar)
 
+---
+
 #### Abstract Factory Pattern
 
 > Class Diagram:
@@ -308,6 +310,8 @@ public class Demo {
 
 [Go Top](#creational-patterns-yaratımsal-kalıplar)
 
+---
+
 #### Singleton Pattern
 
 > Class Diagram:
@@ -348,6 +352,8 @@ public class Demo {
 ```
 
 [Go Top](#creational-patterns-yaratımsal-kalıplar)
+
+---
 
 #### Builder Pattern
 
@@ -567,6 +573,8 @@ public class Demo {
 ```
 
 [Go Top](#creational-patterns-yaratımsal-kalıplar)
+
+---
 
 #### Prototype Pattern
 

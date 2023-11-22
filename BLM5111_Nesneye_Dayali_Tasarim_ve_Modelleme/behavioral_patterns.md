@@ -1,683 +1,677 @@
-### Creational Patterns (Yaratımsal Kalıplar):
+### Behavioral Patterns (Davranışsal Kalıplar):
 
-> Nesnelerin nasıl oluşturulacağını tanımlayan kalıplardır.
+> Nesnelerin arasındaki etkileşimi tanımlayan kalıplardır.
 
-1. **[Factory Method:](#factory-method)** Nesnelerin oluşturulmasını soyutlayan bir kalıptır.
-2. **[Abstract Factory Pattern:](#abstract-factory-pattern)** Birden fazla ilgili nesneyi tek bir çağrıyla oluşturmayı sağlar.
-3. **[Singleton Pattern:](#singleton-pattern)** Bir sınıftan tek bir nesne üretilmesini sağlar.
-4. **[Builder Pattern:](#builder-pattern)** Karmaşık nesnelerin adım adım oluşturulmasını sağlar.
-5. **[Prototype Pattern:](#prototype-pattern)** Var olan bir nesneden, klonlanmış bir nesne oluşturmayı sağlar.
+1. **[Iterator Pattern:](#iterator-pattern)** Bir koleksiyonun elemanları üzerinde dolaşmayı sağlayan bir kalıptır.
+2. **[Observer Pattern:](#observer-pattern)** Bir nesnenin durumundaki değişiklikleri, diğer nesnelere bildirmeyi sağlayan bir kalıptır.
+3. **[Mediator Pattern:](#mediator-pattern)** Nesneler arasındaki iletişimi merkezi bir nesne üzerinden yapan bir kalıptır.
+4. **[Memento Pattern:](#memento-pattern)** Bir nesnenin durumunu saklamayı ve daha sonra geri yüklemeyi sağlayan bir kalıptır.
+5. **[Chain of Responsibility Pattern:](#chain-of-responsibility-pattern)** Bir isteğin bir dizi nesne tarafından işlenmesini sağlayan bir kalıptır.
+6. **[Command Pattern:](#command-pattern)** Bir isteği bir nesneye aktarılmasını ve daha sonra nesne tarafından işlenmesini sağlayan bir kalıptır.
+7. **[Interpreter Pattern:](#interpreter-pattern)** Bir dilin ifadelerini yorumlamayı sağlayan bir kalıptır.
+8. **[State Pattern:](#state-pattern)** Bir nesnenin davranışını, durumuna göre değiştiren bir kalıptır.
+9. **[Strategy Pattern:](#strategy-pattern)** Bir algoritmayı birden fazla nesne tarafından kullanılmasını sağlayan bir kalıptır.
+10. **[Template Method Pattern:](#template-method-pattern)**: Bir algoritmanın iskeletini tanımlayan ve bazı adımların alt sınıflar tarafından uygulanmasını sağlayan bir kalıptır.
+11. **[Visitor Pattern:](#visitor-pattern)** Bir nesne yapısında dolaşmayı ve her nesne üzerinde bir işlem yapmayı sağlayan bir kalıptır.
 
-#### Factory Method
+#### Iterator Pattern
 
 > Class Diagram:
 
 ```mermaid
 classDiagram
-    class Button {
-        +render()
-        +onClick()
-    }
-    <<interface>> Button
-    class WindowsButton
-    class HTMLButton
-    class Dialog {
-        +render()
-        +createButton() Button*
-    }
-    <<interface>> Dialog
-    class WindowsDialog {
-        +createButton() WindowsButton
-    }
-    class HTMLDialog {
-        +createButton() HTMLButton
-    }
-    class Demo {
-        +main(String[] args)
-    }
-    Button <|.. WindowsButton
-    Button <|.. HTMLButton
-    Dialog <|-- WindowsDialog
-    Dialog <|-- HTMLDialog
-    Demo ..> Dialog
-    Demo ..> Button
+class SocialScammer {
+    +send(iterator: Iterator, message: String)
+}
 ```
 
 > Java Code:
 
 ```java
-public interface Button {
-    void render();
-    void onClick();
+public interface ProfileIterator {
+    Profile getNext();
+    boolean hasMore();
 }
 
-public class WindowsButton implements Button {
-    @Override
-    public void render() {
-        System.out.println("Render Windows Button");
-    }
-
-    @Override
-    public void onClick() {
-        System.out.println("Click Windows Button");
-    }
+public interface SocialNetwork {
+    ProfileIterator createFriendsIterator(String profileId);
+    ProfileIterator createCoworkersIterator(String profileId);
 }
 
-public class HTMLButton implements Button {
-    @Override
-    public void render() {
-        System.out.println("Render HTML Button");
+public class Facebook implements SocialNetwork {
+    public ProfileIterator createFriendsIterator(String profileId) {
+        return new FacebookIterator(this, profileId, "friends");
     }
-
-    @Override
-    public void onClick() {
-        System.out.println("Click HTML Button");
+    public ProfileIterator createCoworkersIterator(String profileId) {
+        return new FacebookIterator(this, profileId, "coworkers");
     }
 }
 
-public interface Dialog {
-    void render();
-    void onClick();
+public class FacebookIterator implements ProfileIterator {
+    private Facebook facebook;
+    private String profileId;
+    private String type;
+    private int currentPosition = 0;
+    private List<String> cache;
+    public FacebookIterator(Facebook facebook, String profileId, String type) {
+        this.facebook = facebook;
+        this.profileId = profileId;
+        this.type = type;
+    }
+    private void lazyLoad() {
+        if (cache == null) {
+            cache = facebook.requestProfileFriendsFromFacebook(profileId, type);
+        }
+    }
+    @Override
+    public Profile getNext() {
+        if (!hasMore()) {
+            return null;
+        }
+        String friendId = cache.get(currentPosition);
+        Profile friendProfile = facebook.requestProfileFromFacebook(friendId);
+        currentPosition++;
+        return friendProfile;
+    }
+    @Override
+    public boolean hasMore() {
+        lazyLoad();
+        return currentPosition < cache.size();
+    }
 }
 
-public class WindowsDialog implements Dialog {
-    @Override
-    public void render() {
-        System.out.println("Render Windows Dialog");
+public class Profile {
+    private String id;
+    private String email;
+
+    public Profile(String id, String email) {
+        this.id = id;
+        this.email = email;
     }
 
-    @Override
-    public void onClick() {
-        System.out.println("Click Windows Dialog");
-    }
-}
-
-public class HTMLDialog implements Dialog {
-    @Override
-    public void render() {
-        System.out.println("Render HTML Dialog");
+    public String getId() {
+        return id;
     }
 
-    @Override
-    public void onClick() {
-        System.out.println("Click HTML Dialog");
+    public String getEmail() {
+        return email;
     }
 }
 
-public class Demo {
-    private static Dialog dialog;
-    public static void main(String[] args) {
-        configure();
-        runBusinessLogic();
+public class SocialSpammer {
+    public void send(ProfileIterator iterator, String message) {
+        while (iterator.hasMore()) {
+            Profile profile = iterator.getNext();
+            System.out.println("Sending message to " + profile.getEmail() + ": " + message);
+        }
+    }
+}
+
+```
+
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
+
+---
+
+#### Observer Pattern
+
+> Class Diagram:
+
+```mermaid
+classDiagram
+class EventListeners {
+    +update(filename: String)
+}
+<<interface>> EventListeners
+class EventManager {
+    -listeners: ~Map~
+    +subscribe(eventType: String, listener: EventListeners)
+    +unsubscribe(eventType: String, listener: EventListeners)
+    +notify(eventType: String, filename: String)
+}
+class Editor {
+    -events: EventManager
+    -filename: String
+    +openFile(filename: String)
+    +saveFile()
+}
+class EmailAlertListener {
+    -email: String
+    +update(filename: String)
+}
+class LoggingListener {
+    -log: String
+    +update(filename: String)
+}
+EventListeners <|.. EmailAlertListener
+EventListeners <|.. LoggingListener
+Editor o--> EventManager
+EventManager o--> EventListeners
+```
+
+> Java Code:
+
+```java
+public interface EventListeners {
+    void update(String filename);
+}
+
+public class EventManager {
+    Map<String, List<EventListeners>> listeners = new HashMap<>();
+
+    public EventManager(String... operations) {
+        for (String operation : operations) {
+            this.listeners.put(operation, new ArrayList<>());
+        }
     }
 
-    static void configure() {
-        if (System.getProperty("os.name").equals("Windows")) {
-            dialog = new WindowsDialog();
+    public void subscribe(String eventType, EventListeners listener) {
+        List<EventListeners> users = listeners.get(eventType);
+        users.add(listener);
+    }
+
+    public void unsubscribe(String eventType, EventListeners listener) {
+        List<EventListeners> users = listeners.get(eventType);
+        users.remove(listener);
+    }
+
+    public void notify(String eventType, String filename) {
+        List<EventListeners> users = listeners.get(eventType);
+        for (EventListeners listener : users) {
+            listener.update(filename);
+        }
+    }
+}
+
+public class Editor {
+    public EventManager events;
+    private String filename;
+
+    public Editor() {
+        this.events = new EventManager("open", "save");
+    }
+
+    public void openFile(String filename) {
+        this.filename = filename;
+        events.notify("open", filename);
+    }
+
+    public void saveFile() throws Exception {
+        if (this.filename != null) {
+            events.notify("save", filename);
         } else {
-            dialog = new HTMLDialog();
+            throw new Exception("Please open a file first.");
         }
     }
+}
 
-    static void runBusinessLogic() {
-        dialog.render();
-        dialog.onClick();
+public class EmailAlertListener implements EventListeners {
+    private String email;
+
+    public EmailAlertListener(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public void update(String filename) {
+        System.out.println("Email to " + email + ": Someone has performed " + filename + " operation with the following file: " + filename);
+    }
+}
+
+public class LoggingListener implements EventListeners {
+    private String log;
+
+    public LoggingListener(String filename) {
+        this.log = filename;
+    }
+
+    @Override
+    public void update(String filename) {
+        System.out.println("Logging to file: Someone has performed " + filename + " operation with the following file: " + filename);
+    }
+}
+
+public class Demo {
+    public static void main(String[] args) {
+        Editor editor = new Editor();
+        EventListeners emailAlertsListener = new EmailAlertListener("email@emial.com");
+        EventListeners loggingListener = new LoggingListener("/path/to/log/file.txt");
+        editor.events.subscribe("open", emailAlertsListener);
+        editor.events.subscribe("save", emailAlertsListener);
+        editor.events.subscribe("save", loggingListener);
+        try {
+            editor.openFile("test.txt");
+            editor.saveFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 ```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar)
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
-#### Abstract Factory Pattern
+---
+
+#### Mediator Pattern
 
 > Class Diagram:
 
 ```mermaid
 classDiagram
-class Button {
-    +render()
-    +onClick()
+class Mediator {
+    +notify(sender: Component, event: String)
 }
-<<interface>> Button
-class WindowsButton
-class HTMLButton
-class Checkbox {
-    +render()
-    +onClick()
+<<interface>> Mediator
+class AuthenticationDialog {
+    -title: Title
+    -loginOrRegister: TextBox
+    -login, password: TextBox
+    -rememberMe: CheckBox
+    -ok, cancel: Button
+    +notify(sender: Component, event: String)
 }
-<<interface>> Checkbox
-class WindowsCheckbox
-class HTMLCheckbox
-class GUIFactory {
-    +createButton() Button*
-    +createCheckbox() Checkbox*
+class Component {
+    -dialog: Mediator
+    +click()
+    +keypress()
+    +change()
+    +updateUI()
 }
-<<interface>> GUIFactory
-class WindowsFactory {
-    +createButton() WindowsButton
-    +createCheckbox() WindowsCheckbox
+<<abstract>> Component
+class CheckBox {
+    ...
+    +check()
 }
-class HTMLFactory {
-    +createButton() HTMLButton
-    +createCheckbox() HTMLCheckbox
-}
-class Application {
-    +paint()
-}
-Button <|-- WindowsButton
-Button <|-- HTMLButton
-Checkbox <|-- WindowsCheckbox
-Checkbox <|-- HTMLCheckbox
-GUIFactory <|.. WindowsFactory
-GUIFactory <|.. HTMLFactory
-WindowsFactory ..> WindowsButton
-WindowsFactory ..> WindowsCheckbox
-HTMLFactory ..> HTMLButton
-HTMLFactory ..> HTMLCheckbox
-Application --> Button
-Application --> Checkbox
-Application --> GUIFactory
+Button --|> Component
+TextBox --|> Component
+CheckBox --|> Component
+Button <--* AuthenticationDialog
+TextBox <--* AuthenticationDialog
+CheckBox <--* AuthenticationDialog
+Mediator <--> Component
+Mediator <|-- AuthenticationDialog
 ```
 
 > Java Code:
 
 ```java
-public interface Button {
-    void render();
-    void onClick();
+
+public interface Mediator {
+    void notify(Component sender, String event);
 }
 
-public class WindowsButton implements Button {
-    @Override
-    public void render() {
-        System.out.println("Render Windows Button");
-    }
+public class AuthenticationDialog implements Mediator {
+    private Title title;
+    private TextBox loginOrRegister;
+    private TextBox login;
+    private TextBox password;
+    private CheckBox rememberMe;
+    private Button ok;
+    private Button cancel;
 
     @Override
-    public void onClick() {
-        System.out.println("Click Windows Button");
-    }
-}
-
-public class HTMLButton implements Button {
-    @Override
-    public void render() {
-        System.out.println("Render HTML Button");
-    }
-
-    @Override
-    public void onClick() {
-        System.out.println("Click HTML Button");
-    }
-}
-
-public interface Checkbox {
-    void render();
-    void onClick();
-}
-
-public class WindowsCheckbox implements Checkbox {
-    @Override
-    public void render() {
-        System.out.println("Render Windows Checkbox");
-    }
-
-    @Override
-    public void onClick() {
-        System.out.println("Click Windows Checkbox");
+    public void notify(Component sender, String event) {
+        if (sender == loginOrRegister && event == "click") {
+            title.setText("Log in");
+            loginOrRegister.hide();
+            // ...
+        }
+        if (sender == rememberMe && event == "check") {
+            // ...
+        }
+        // ...
     }
 }
 
-public class HTMLCheckbox implements Checkbox {
-    @Override
-    public void render() {
-        System.out.println("Render HTML Checkbox");
+public class Component {
+    protected Mediator dialog;
+
+    public Component(Mediator dialog) {
+        this.dialog = dialog;
+    }
+
+    public void click() {
+        dialog.notify(this, "click");
+    }
+
+    public void keypress() {
+        dialog.notify(this, "keypress");
+    }
+
+    public void change() {
+        dialog.notify(this, "change");
+    }
+
+    public abstract void updateUI();
+}
+
+public class Button extends Component {
+    public Button(Mediator dialog) {
+        super(dialog);
+    }
+
+    public void click() {
+        dialog.notify(this, "click");
     }
 
     @Override
-    public void onClick() {
-        System.out.println("Click HTML Checkbox");
+    public void updateUI() {
+        // ...
     }
 }
 
-public interface GUIFactory {
-    Button createButton();
-    Checkbox createCheckbox();
-}
-
-public class WindowsFactory implements GUIFactory {
-    @Override
-    public Button createButton() {
-        return new WindowsButton();
+public class TextBox extends Component {
+    public TextBox(Mediator dialog) {
+        super(dialog);
     }
 
     @Override
-    public Checkbox createCheckbox() {
-        return new WindowsCheckbox();
-    }
-}
-
-public class HTMLFactory implements GUIFactory {
-    @Override
-    public Button createButton() {
-        return new HTMLButton();
+    public void updateUI() {
+        // ...
     }
 
-    @Override
-    public Checkbox createCheckbox() {
-        return new HTMLCheckbox();
+    public void setText(String text) {
+        // ...
+    }
+
+    public String getText() {
+        // ...
     }
 }
 
-public class Application {
-    private Button button;
-    private Checkbox checkbox;
-
-    public Application(GUIFactory factory) {
-        button = factory.createButton();
-        checkbox = factory.createCheckbox();
+public class CheckBox extends Component {
+    public CheckBox(Mediator dialog) {
+        super(dialog);
     }
 
-    public void paint() {
-        button.render();
-        checkbox.render();
+    @Override
+    public void updateUI() {
+        // ...
+    }
+
+    public boolean isChecked() {
+        // ...
+    }
+
+    public void setChecked(boolean checked) {
+        // ...
     }
 }
 
 public class Demo {
-    private static Application configureApplication() {
-        Application app;
-        GUIFactory factory;
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("windows")) {
-            factory = new WindowsFactory();
-            app = new Application(factory);
+    public static void main(String[] args) {
+        AuthenticationDialog authenticationDialog = new AuthenticationDialog();
+        authenticationDialog.click();
+        authenticationDialog.click();
+    }
+}
+
+```
+
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
+
+---
+
+#### Memento Pattern
+
+> Class Diagram:
+
+```mermaid
+classDiagram
+class Editor {
+    -state
+    +setState(x)
+    +createSnapshot()
+}
+class Snapshot {
+    -state
+    +Snapshot(state)
+    +restore()
+}
+class Command {
+    -backup: Snapshot
+    +makeBackup()
+    +undo()
+}
+Snapshot <-- Command
+Editor <--> Snapshot
+```
+
+> Java Code:
+
+```java
+public class Editor {
+    private String state;
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Snapshot createSnapshot() {
+        return new Snapshot(state);
+    }
+
+    public void restoreSnapshot(Snapshot snapshot) {
+        this.state = snapshot.getState();
+    }
+}
+
+public class Snapshot {
+    private String state;
+
+    public Snapshot(String state) {
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
+    }
+}
+
+public class Command {
+    private Editor editor;
+    private Snapshot backup;
+
+    public Command(Editor editor) {
+        this.editor = editor;
+    }
+
+    public void makeBackup() {
+        backup = editor.createSnapshot();
+    }
+
+    public void undo() {
+        editor.restoreSnapshot(backup);
+    }
+}
+
+public class Demo {
+    public static void main(String[] args) {
+        Editor editor = new Editor();
+        Command command = new Command(editor);
+        editor.setState("a");
+        command.makeBackup();
+        editor.setState("b");
+        editor.setState("c");
+        command.undo();
+    }
+}
+```
+
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
+
+---
+
+#### Chain of Responsibility Pattern
+
+> Class Diagram:
+
+```mermaid
+classDiagram
+class ComponentWithContextualHelp {
+    +showHelp()
+}
+<<interface>> ComponentWithContextualHelp
+class Component {
+    -container: Container
+    +tooltipText: String
+    +showHelp()
+}
+class Container {
+    -children: List<Component>
+    +add(child: Component)
+}
+class Panel {
+    -modalHelpText: String
+    +showHelp()
+}
+class Dialog {
+    -wikiPageURL: String
+    +showHelp()
+}
+
+ComponentWithContextualHelp <|.. Component
+Button --|> Component
+Container --|> Component
+Panel --|> Container
+Dialog --|> Container
+Component <--o Container
+Container --> Component
+
+note for Button "inherit showHelp() from the parent class"
+note for Component "if (tooltipText != null) {
+        // show tooltip...
+    } else {
+        // .. or ask the container
+        // to do it
+        container.showHelp()
+    }"
+note for Panel "if (modalHelpText != null) {
+        // show modal window
+        // with a help text
+    } else {
+        parent::showHelp()
+}"
+note for Dialog "if (wikiPageURL != null) {
+        // open wiki help page
+    } else {
+        parent::showHelp()
+}"
+```
+
+> Java Code:
+
+```java
+public interface ComponentWithContextualHelp {
+    void showHelp();
+}
+
+public class Component {
+    protected Container container;
+    protected String tooltipText;
+
+    public Component(Container container) {
+        this.container = container;
+    }
+
+    public void showHelp() {
+        if (tooltipText != null) {
+            // show tooltip...
         } else {
-            factory = new HTMLFactory();
-            app = new Application(factory);
+            // .. or ask the container
+            // to do it
+            container.showHelp();
         }
-        return app;
-    }
-
-    public static void main(String[] args) {
-        Application app = configureApplication();
-        app.paint();
     }
 }
-```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar)
+public class Container {
+    protected List<Component> children = new ArrayList<>();
 
-#### Singleton Pattern
+    public void add(Component child) {
+        children.add(child);
+        child.container = this;
+    }
 
-> Class Diagram:
-
-```mermaid
-classDiagram
-class Singleton {
-    -instance: Singleton
-    -Singleton()
-    +getInstance() Singleton
-}
-class Demo {
-    +main(String[] args)
-}
-Singleton --> Singleton
-Singleton ..> Demo
-```
-
-> Java Code:
-
-```java
-public class Singleton {
-    private static Singleton instance;
-    private Singleton() {}
-    public static Singleton getInstance() {
-        if (instance == null) {
-            instance = new Singleton();
+    public void showHelp() {
+        if (parent != null) {
+            super.showHelp();
         }
-        return instance;
+    }
+}
+
+public class Panel extends Container {
+    protected String modalHelpText;
+
+    public void showHelp() {
+        if (modalHelpText != null) {
+            // show modal window
+            // with a help text
+        } else {
+            super.showHelp();
+        }
+    }
+}
+
+public class Dialog extends Container {
+    protected String wikiPageURL;
+
+    public void showHelp() {
+        if (wikiPageURL != null) {
+            // open wiki help page
+        } else {
+            super.showHelp();
+        }
     }
 }
 
 public class Demo {
     public static void main(String[] args) {
-        Singleton singleton = Singleton.getInstance();
+        Dialog dialog = new Dialog();
+        Panel panel = new Panel();
+        Button button = new Button();
+        dialog.add(panel);
+        panel.add(button);
+        button.showHelp();
     }
 }
 ```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar)
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
-#### Builder Pattern
+---
 
-> Class Diagram:
+#### Command Pattern
 
-```mermaid
-classDiagram
-class Builder {
-    +reset()
-    +setSeats(int number)
-    +setEngine(Engine engine)
-    +setTripComputer(TripComputer tripComputer)
-    +setGPSNavigator(GPSNavigator gpsNavigator)
-}
-<<interface>> Builder
-class CarBuilder {
-    -car: Car
-    +reset()
-    +setSeats(int number)
-    +setEngine(Engine engine)
-    +setTripComputer(TripComputer tripComputer)
-    +setGPSNavigator(GPSNavigator gpsNavigator)
-    +getResult() Car
-}
-class CarManuelBuilder {
-    -manuel: Manuel
-    +reset()
-    +setSeats(int number)
-    +setEngine(Engine engine)
-    +setTripComputer(TripComputer tripComputer)
-    +setGPSNavigator(GPSNavigator gpsNavigator)
-    +getResult() Car
-}
-class Director {
-    +constructSportsCar(Builder builder)
-    +constructSUV(Builder builder)
-}
-class Demo {
-    +main(String[] args)
-}
-Builder <|.. CarBuilder
-Builder <|.. CarManuelBuilder
-CarBuilder --> Car
-CarManuelBuilder --> Manuel
-Builder *-- Engine
-Builder *-- TripComputer
-Builder *-- GPSNavigator
-Director ..> CarBuilder
-Director ..> CarManuelBuilder
-Demo ..> Director
-```
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
-> Java Code:
+---
 
-```java
-public interface Builder {
-    void reset();
-    void setSeats(int number);
-    void setEngine(Engine engine);
-    void setTripComputer(TripComputer tripComputer);
-    void setGPSNavigator(GPSNavigator gpsNavigator);
-}
+#### Interpreter Pattern
 
-public class CarBuilder implements Builder {
-    private Car car;
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
-    public CarBuilder() {
-        reset();
-    }
+---
 
-    @Override
-    public void reset() {
-        car = new Car();
-    }
+#### State Pattern
 
-    @Override
-    public void setSeats(int number) {
-        car.setSeats(number);
-    }
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
-    @Override
-    public void setEngine(Engine engine) {
-        car.setEngine(engine);
-    }
+---
 
-    @Override
-    public void setTripComputer(TripComputer tripComputer) {
-        car.setTripComputer(tripComputer);
-    }
+#### Strategy Pattern
 
-    @Override
-    public void setGPSNavigator(GPSNavigator gpsNavigator) {
-        car.setGpsNavigator(gpsNavigator);
-    }
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
-    public Car getResult() {
-        return car;
-    }
-}
+---
 
-public class CarManuelBuilder implements Builder {
-    private Manuel manuel;
+#### Template Method Pattern
 
-    public CarManuelBuilder() {
-        reset();
-    }
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
-    @Override
-    public void reset() {
-        manuel = new CarManuelBuilder();
-    }
+---
 
-    @Override
-    public void setSeats(int number) {
-        manuel.setSeats(number);
-    }
+#### Visitor Pattern
 
-    @Override
-    public void setEngine(Engine engine) {
-        manuel.setEngine(engine);
-    }
-
-    @Override
-    public void setTripComputer(TripComputer tripComputer) {
-        manuel.setTripComputer(tripComputer);
-    }
-
-    @Override
-    public void setGPSNavigator(GPSNavigator gpsNavigator) {
-        manuel.setGpsNavigator(gpsNavigator);
-    }
-
-    public Car getResult() {
-        return manuel;
-    }
-}
-
-public class Car {
-    private int seats;
-    private Engine engine;
-    private TripComputer tripComputer;
-    private GPSNavigator gpsNavigator;
-
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
-
-    public void setTripComputer(TripComputer tripComputer) {
-        this.tripComputer = tripComputer;
-    }
-
-    public void setGpsNavigator(GPSNavigator gpsNavigator) {
-        this.gpsNavigator = gpsNavigator;
-    }
-}
-
-public interface Engine {}
-
-public interface TripComputer {}
-
-public interface GPSNavigator {}
-
-public class Manuel {
-    private int seats;
-    private Engine engine;
-    private TripComputer tripComputer;
-    private GPSNavigator gpsNavigator;
-
-    public void setSeats(int seats) {
-        this.seats = seats;
-    }
-
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
-
-    public void setTripComputer(TripComputer tripComputer) {
-        this.tripComputer = tripComputer;
-    }
-
-    public void setGpsNavigator(GPSNavigator gpsNavigator) {
-        this.gpsNavigator = gpsNavigator;
-    }
-}
-
-
-public class Director {
-    public void constructSportsCar(Builder builder) {
-        builder.reset();
-        builder.setSeats(2);
-        builder.setEngine(new Engine());
-        builder.setTripComputer(new TripComputer());
-        builder.setGPSNavigator(new GPSNavigator());
-    }
-
-    public void constructSUV(Builder builder) {
-        builder.reset();
-        builder.setSeats(4);
-        builder.setEngine(new Engine());
-        builder.setTripComputer(new TripComputer());
-        builder.setGPSNavigator(new GPSNavigator());
-    }
-}
-
-public class Demo {
-    public static void main(String[] args) {
-        Director director = new Director();
-        CarBuilder builder = new CarBuilder();
-        director.constructSportsCar(builder);
-        Car car = builder.getResult();
-    }
-}
-```
-
-[Go Top](#creational-patterns-yaratımsal-kalıplar)
-
-#### Prototype Pattern
-
-> Class Diagram:
-
-```mermaid
-classDiagram
-class Shape {
-    -x, y: int
-    -color: String
-    +Shape(Shape source)
-    +clone() Shape*
-}
-<<abstract>> Shape
-class Rectangle {
-    -width, height: int
-    +Rectangle(Rectangle source)
-    +clone() Rectangle
-}
-class Circle {
-    -radius: int
-    +Circle(Circle source)
-    +clone() Circle
-}
-class Demo {
-    +main(String[] args)
-}
-Shape <|-- Rectangle
-Shape <|-- Circle
-Demo o--> Shape
-```
-
-> Java Code:
-
-```java
-public interface Shape {
-    private int x;
-    private int y;
-    private String color;
-
-    public Shape(Shape source) {
-        if (source != null) {
-            this.x = source.x;
-            this.y = source.y;
-            this.color = source.color;
-        }
-    }
-
-    public abstract Shape clone();
-}
-
-public class Rectangle extends Shape {
-    private int width;
-    private int height;
-
-    public Rectangle(Rectangle source) {
-        super(source);
-        if (source != null) {
-            this.width = source.width;
-            this.height = source.height;
-        }
-    }
-
-    @Override
-    public Shape clone() {
-        return new Rectangle(this);
-    }
-}
-
-public class Circle extends Shape {
-    private int radius;
-
-    public Circle(Circle source) {
-        super(source);
-        if (source != null) {
-            this.radius = source.radius;
-        }
-    }
-
-    @Override
-    public Shape clone() {
-        return new Circle(this);
-    }
-}
-
-public class Demo {
-    private static List<Shape> shapes = new ArrayList<>();
-
-    public static void main(String[] args) {
-        Circle circle = new Circle();
-        circle.x = 10;
-        circle.y = 20;
-        circle.radius = 15;
-        circle.color = "red";
-        shapes.add(circle);
-
-        Circle anotherCircle = circle.clone();
-        shapes.add(anotherCircle);
-
-        Rectangle rectangle = new Rectangle();
-        rectangle.width = 10;
-        rectangle.height = 20;
-        rectangle.color = "blue";
-        shapes.add(rectangle);
-
-        List<Shape> shapesCopy = new ArrayList<>();
-        for (Shape shape : shapes) {
-            shapesCopy.add(shape.clone());
-        }
-    }
-}
-```
-
-[Go Top](#creational-patterns-yaratımsal-kalıplar)
+[Go Top](#behavioral-patterns-davranışsal-kalıplar)
