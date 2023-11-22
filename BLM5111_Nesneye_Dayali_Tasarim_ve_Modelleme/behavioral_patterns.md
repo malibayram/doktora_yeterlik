@@ -8,11 +8,10 @@
 4. **[Memento Pattern:](#memento-pattern)** Bir nesnenin durumunu saklamayı ve daha sonra geri yüklemeyi sağlayan bir kalıptır.
 5. **[Chain of Responsibility Pattern:](#chain-of-responsibility-pattern)** Bir isteğin bir dizi nesne tarafından işlenmesini sağlayan bir kalıptır.
 6. **[Command Pattern:](#command-pattern)** Bir isteği bir nesneye aktarılmasını ve daha sonra nesne tarafından işlenmesini sağlayan bir kalıptır.
-7. **[Interpreter Pattern:](#interpreter-pattern)** Bir dilin ifadelerini yorumlamayı sağlayan bir kalıptır.
-8. **[State Pattern:](#state-pattern)** Bir nesnenin davranışını, durumuna göre değiştiren bir kalıptır.
-9. **[Strategy Pattern:](#strategy-pattern)** Bir algoritmayı birden fazla nesne tarafından kullanılmasını sağlayan bir kalıptır.
-10. **[Template Method Pattern:](#template-method-pattern)**: Bir algoritmanın iskeletini tanımlayan ve bazı adımların alt sınıflar tarafından uygulanmasını sağlayan bir kalıptır.
-11. **[Visitor Pattern:](#visitor-pattern)** Bir nesne yapısında dolaşmayı ve her nesne üzerinde bir işlem yapmayı sağlayan bir kalıptır.
+7. **[State Pattern:](#state-pattern)** Bir nesnenin davranışını, durumuna göre değiştiren bir kalıptır.
+8. **[Strategy Pattern:](#strategy-pattern)** Bir algoritmayı birden fazla nesne tarafından kullanılmasını sağlayan bir kalıptır.
+9. **[Template Method Pattern:](#template-method-pattern)**: Bir algoritmanın iskeletini tanımlayan ve bazı adımların alt sınıflar tarafından uygulanmasını sağlayan bir kalıptır.
+10. **[Visitor Pattern:](#visitor-pattern)** Bir nesne yapısında dolaşmayı ve her nesne üzerinde bir işlem yapmayı sağlayan bir kalıptır.
 
 #### Iterator Pattern
 
@@ -20,9 +19,55 @@
 
 ```mermaid
 classDiagram
-class SocialScammer {
+class SocialSpammer {
     +send(iterator: Iterator, message: String)
 }
+class Application {
+    -networks: List<SocialNetwork>
+    +sendSpamToFriends(profileId: String, message: String)
+    +sendSpamToCoworkers(profileId: String, message: String)
+}
+class SocialNetwork {
+    +createFriendsIterator(profileId: String)
+    +createCoworkersIterator(profileId: String)
+}
+<<interface>> SocialNetwork
+class ProfileIterator {
+    +getNext()
+    +hasMore()
+}
+<<interface>> ProfileIterator
+class Facebook {
+    +createFriendsIterator(profileId: String)
+    +createCoworkersIterator(profileId: String)
+}
+class FacebookIterator {
+    -facebook: Facebook
+    -profileId: String
+    -type: String
+    -currentPosition: int
+    -cache: List<String>
+    +FacebookIterator(facebook: Facebook, profileId: String, type: String)
+    +lazyLoad()
+    +getNext()
+    +hasMore()
+}
+class Profile {
+    -id: String
+    -email: String
+    +Profile(id: String, email: String)
+    +getId()
+    +getEmail()
+}
+SocialSpammer --> ProfileIterator
+SocialSpammer ..> Profile
+Application --> SocialSpammer
+Application --> Facebook
+Facebook <--> FacebookIterator
+FacebookIterator ..|> ProfileIterator
+SocialNetwork ..> ProfileIterator
+ProfileIterator ..> Profile
+Facebook o--> Profile
 ```
 
 > Java Code:
@@ -644,11 +689,183 @@ public class Demo {
 
 #### Command Pattern
 
-[Go Top](#behavioral-patterns-davranışsal-kalıplar)
+> Class Diagram:
 
----
+```mermaid
+classDiagram
+class Application {
+    -clipboard: String
+    -editor: Editor
+    -history: List<Command>
+    +executeCommand(command: Command)
+    +undo()
+    +getClipboard()
+}
+class Editor {
+    -text: String
+    +deleteSelection()
+    +replaceSelection(text: String)
+    +getSelection()
+}
+class Command {
+    -app: Application
+    -editor: Editor
+    -backup: String
+    +saveBackup()
+    +undo()
+    +execute()*
+}
+<<interface>> Command
+class CopyCommand {
+    +execute()
+}
+class CutCommand {
+    +execute()
+}
+class PasteCommand {
+    +execute()
+}
+class UndoCommand {
+    +execute()
+}
+Application o--> Editor
+Application o--> Command
+Application --> Command : buttons|shortcuts
+Command <|-- CopyCommand
+Command <|-- CutCommand
+Command <|-- PasteCommand
+Command <|-- UndoCommand
+CopyCommand --> Editor
+CutCommand --> Editor
+PasteCommand --> Editor
+UndoCommand --> Application
+```
 
-#### Interpreter Pattern
+> Java Code:
+
+```java
+
+public class Application {
+    public String clipboard;
+    private Editor editor;
+    private List<Command> history = new ArrayList<>();
+
+    public void executeCommand(Command command) {
+        if (command.execute()) {
+            history.add(command);
+        }
+    }
+
+    public void undo() {
+        if (history.size() > 0) {
+            Command command = history.get(history.size() - 1);
+            if (command != null) {
+                command.undo();
+                history.remove(command);
+            }
+        }
+    }
+
+    public String getClipboard() {
+        return clipboard;
+    }
+}
+
+public class Editor {
+    public String text;
+
+    public void deleteSelection() {
+        text = "";
+    }
+
+    public void replaceSelection(String text) {
+        this.text = text;
+    }
+
+    public String getSelection() {
+        return text;
+    }
+}
+
+public interface Command {
+    private Application app;
+    private Editor editor;
+    private String backup;
+
+    public Command(Application app, Editor editor) {
+        this.app = app;
+        this.editor = editor;
+    }
+
+    public void saveBackup() {
+        backup = editor.text;
+    }
+
+    public void undo() {
+        editor.text = backup;
+    }
+
+    void execute();
+}
+
+public class CopyCommand implements Command {
+    public CopyCommand(Application app, Editor editor) {
+        super(app, editor);
+    }
+
+    @Override
+    public void execute() {
+        app.clipboard = editor.getSelection();
+    }
+}
+
+public class CutCommand implements Command {
+    public CutCommand(Application app, Editor editor) {
+        super(app, editor);
+    }
+
+    @Override
+    public void execute() {
+        saveBackup();
+        app.clipboard = editor.getSelection();
+        editor.deleteSelection();
+    }
+}
+
+public class PasteCommand implements Command {
+    public PasteCommand(Application app, Editor editor) {
+        super(app, editor);
+    }
+
+    @Override
+    public void execute() {
+        saveBackup();
+        editor.replaceSelection(app.clipboard);
+    }
+}
+
+public class UndoCommand implements Command {
+    public UndoCommand(Application app, Editor editor) {
+        super(app, editor);
+    }
+
+    @Override
+    public void execute() {
+        app.undo();
+    }
+}
+
+public class Demo {
+    public static void main(String[] args) {
+        Editor editor = new Editor();
+        Application app = new Application();
+        app.copy();
+        app.paste();
+        app.cut();
+        app.undo();
+    }
+}
+```
 
 [Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
@@ -656,11 +873,305 @@ public class Demo {
 
 #### State Pattern
 
+> Class Diagram:
+
+```mermaid
+classDiagram
+class State {
+    -player: Player
+    +State(player: Player)
+    +clickLock()*
+    +clickPlay()*
+    +clickNext()*
+    +clickPrevious()*
+}
+<<interface>> State
+class LockedState {
+    +clickLock()
+    +clickPlay()
+    +clickNext()
+    +clickPrevious()
+}
+class ReadyState {
+    +clickLock()
+    +clickPlay()
+    +clickNext()
+    +clickPrevious()
+}
+class PlayingState {
+    +clickLock()
+    +clickPlay()
+    +clickNext()
+    +clickPrevious()
+}
+class Player {
+    -state: State
+    -playing: boolean
+    -playlist: List<String>
+    -currentTrack: int
+    +Player()
+    +changeState(state: State)
+    +getState()
+    +setPlaying(playing: boolean)
+    +isPlaying()
+    +startPlayback()
+    +nextTrack()
+    +previousTrack()
+    +setCurrentTrackAfterStop()
+}
+State <|-- LockedState
+State <|-- ReadyState
+State <|-- PlayingState
+Player o--> State
+```
+
+> Java Code:
+
+```java
+
+public interface State {
+    private Player player;
+
+    public State(Player player) {
+        this.player = player;
+    }
+
+    public abstract String clickLock();
+    public abstract String clickPlay();
+    public abstract String clickNext();
+    public abstract String clickPrevious();
+}
+
+public class LockedState implements State {
+    public LockedState(Player player) {
+        super(player);
+        player.setPlaying(false);
+    }
+
+    @Override
+    public String clickLock() {
+        if (player.isPlaying()) {
+            player.changeState(new PlayingState(player));
+            return "Stop playing";
+        } else {
+            player.changeState(new ReadyState(player));
+            return "Locked...";
+        }
+    }
+
+    @Override
+    public String clickPlay() {
+        player.changeState(new ReadyState(player));
+        return "Locked...";
+    }
+
+    @Override
+    public String clickNext() {
+        return "Locked...";
+    }
+
+    @Override
+    public String clickPrevious() {
+        return "Locked...";
+    }
+}
+
+public class ReadyState implements State {
+    public ReadyState(Player player) {
+        super(player);
+    }
+
+    @Override
+    public String clickLock() {
+        player.changeState(new LockedState(player));
+        return "Locked...";
+    }
+
+    @Override
+    public String clickPlay() {
+        String action = player.startPlayback();
+        player.changeState(new PlayingState(player));
+        return action;
+    }
+
+    @Override
+    public String clickNext() {
+        return "Locked...";
+    }
+
+    @Override
+    public String clickPrevious() {
+        return "Locked...";
+    }
+}
+
+public class PlayingState implements State {
+    public PlayingState(Player player) {
+        super(player);
+    }
+
+    @Override
+    public String clickLock() {
+        player.changeState(new LockedState(player));
+        player.setCurrentTrackAfterStop();
+        return "Stop playing";
+    }
+
+    @Override
+    public String clickPlay() {
+        player.changeState(new ReadyState(player));
+        return "Paused...";
+    }
+
+    @Override
+    public String clickNext() {
+        String action = player.nextTrack();
+        if (action.equals("Starting first track")) {
+            return action;
+        }
+        return "Playing next track";
+    }
+
+    @Override
+    public String clickPrevious() {
+        String action = player.previousTrack();
+        if (action.equals("Starting first track")) {
+            return action;
+        }
+        return "Playing previous track";
+    }
+}
+
+public class Player {
+    private State state;
+    private boolean playing = false;
+    private List<String> playlist = new ArrayList<>();
+    private int currentTrack = 0;
+
+    public Player() {
+        this.state = new ReadyState(this);
+        setPlaying(true);
+        for (int i = 1; i <= 12; i++) {
+            playlist.add("Track " + i);
+        }
+    }
+
+    public void changeState(State state) {
+        this.state = state;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public String startPlayback() {
+        return "Playing " + playlist.get(currentTrack);
+    }
+
+    public String nextTrack() {
+        currentTrack++;
+        if (currentTrack > playlist.size() - 1) {
+            currentTrack = 0;
+        }
+        return "Playing " + playlist.get(currentTrack);
+    }
+
+    public String previousTrack() {
+        currentTrack--;
+        if (currentTrack < 0) {
+            currentTrack = playlist.size() - 1;
+        }
+        return "Playing " + playlist.get(currentTrack);
+    }
+
+    public void setCurrentTrackAfterStop() {
+        this.currentTrack = 0;
+    }
+}
+```
+
 [Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
 ---
 
 #### Strategy Pattern
+
+> Class Diagram:
+
+```mermaid
+classDiagram
+class RouteStrategy {
+    +buildRoute(a, b)*
+}
+<<interface>> RouteStrategy
+class RoadStrategy {
+    +buildRoute(a, b)
+}
+class PublicTransportStrategy {
+    +buildRoute(a, b)
+}
+class WalkingStrategy {
+    +buildRoute(a, b)
+}
+class Navigator {
+    -strategy: RouteStrategy
+    +Navigator(strategy: RouteStrategy)
+    +buildRoute(a, b)
+}
+RouteStrategy <|.. RoadStrategy
+RouteStrategy <|.. PublicTransportStrategy
+RouteStrategy <|.. WalkingStrategy
+Navigator o--> RouteStrategy
+```
+
+> Java Code:
+
+```java
+public interface RouteStrategy {
+    public void buildRoute(int a, int b);
+}
+
+public class RoadStrategy implements RouteStrategy {
+    @Override
+    public void buildRoute(int a, int b) {
+        System.out.println("RoadStrategy: " + a + " -> " + b);
+    }
+}
+
+public class PublicTransportStrategy implements RouteStrategy {
+    @Override
+    public void buildRoute(int a, int b) {
+        System.out.println("PublicTransportStrategy: " + a + " -> " + b);
+    }
+}
+
+public class WalkingStrategy implements RouteStrategy {
+    @Override
+    public void buildRoute(int a, int b) {
+        System.out.println("WalkingStrategy: " + a + " -> " + b);
+    }
+}
+
+public class Navigator {
+    private RouteStrategy strategy;
+
+    public Navigator(RouteStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void buildRoute(int a, int b) {
+        strategy.buildRoute(a, b);
+    }
+}
+```
 
 [Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
@@ -668,10 +1179,225 @@ public class Demo {
 
 #### Template Method Pattern
 
+> Class Diagram:
+
+```mermaid
+classDiagram
+class GameAI {
+    +takeTurn()
+    +collectResources()
+    +buildStructures()*
+    +buildUnits()*
+    +attack()
+    +sendScouts(position)*
+    +sendWarriors(position)*
+}
+<<abstract>> GameAI
+class OrcsAI {
+    +buildStructures()
+    +buildUnits()
+    +sendScouts(position)
+    +sendWarriors(position)
+}
+class MonstersAI {
+    +collectResources()
+    +buildStructures()
+    +buildUnits()
+    +sendScouts(position)
+    +sendWarriors(position)
+}
+GameAI <|-- OrcsAI
+GameAI <|-- MonstersAI
+```
+
+> Java Code:
+
+```java
+public abstract class GameAI {
+    public void takeTurn() {
+        collectResources();
+        buildStructures();
+        buildUnits();
+        attack();
+    }
+
+    public abstract void collectResources();
+    public abstract void buildStructures();
+    public abstract void buildUnits();
+    public abstract void attack();
+}
+
+public class OrcsAI extends GameAI {
+    @Override
+    public void collectResources() {
+        System.out.println("OrcsAI: Collecting gold...");
+    }
+
+    @Override
+    public void buildStructures() {
+        System.out.println("OrcsAI: Building strong structures...");
+    }
+
+    @Override
+    public void buildUnits() {
+        System.out.println("OrcsAI: Building strong units...");
+    }
+
+    @Override
+    public void attack() {
+        System.out.println("OrcsAI: Attacking enemies...");
+    }
+}
+
+public class MonstersAI extends GameAI {
+    @Override
+    public void collectResources() {
+        System.out.println("MonstersAI: Collecting gold...");
+    }
+
+    @Override
+    public void buildStructures() {
+        System.out.println("MonstersAI: Building strong structures...");
+    }
+
+    @Override
+    public void buildUnits() {
+        System.out.println("MonstersAI: Building strong units...");
+    }
+
+    @Override
+    public void attack() {
+        System.out.println("MonstersAI: Attacking enemies...");
+    }
+}
+
+```
+
 [Go Top](#behavioral-patterns-davranışsal-kalıplar)
 
 ---
 
 #### Visitor Pattern
+
+```mermaid
+classDiagram
+class Visitor {
+    +visitDot(d: Dot)
+    +visitCircle(c: Circle)
+}
+<<interface>> Visitor
+class XMLExportVisitor {
+    +export(drawing: Drawing)
+    +visitDot(d: Dot)
+    +visitCircle(c: Circle)
+}
+class Shape {
+    +move(x, y)
+    +draw()
+    +accept(visitor: Visitor)
+}
+<<interface>> Shape
+class Dot {
+    +x: int
+    +y: int
+    +accept(visitor: Visitor)
+}
+class Circle {
+    +x: int
+    +y: int
+    +radius: int
+    +accept(visitor: Visitor)
+}
+Visitor <|.. XMLExportVisitor
+Shape <|.. Dot
+Shape <|.. Circle
+Shape <..> XMLExportVisitor : application
+Shape ..> Visitor
+Visitor ..> Dot
+Visitor ..> Circle
+```
+
+> Java Code:
+
+```java
+public interface Visitor {
+    void visitDot(Dot d);
+    void visitCircle(Circle c);
+}
+
+public class XMLExportVisitor implements Visitor {
+    public String export(Drawing drawing) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>" + System.lineSeparator());
+        sb.append("<drawing>" + System.lineSeparator());
+        for (Shape shape : drawing.getShapes()) {
+            sb.append(shape.accept(this)).append(System.lineSeparator());
+        }
+        sb.append("</drawing>" + System.lineSeparator());
+        return sb.toString();
+    }
+
+    @Override
+    public String visitDot(Dot d) {
+        return String.format("<dot x=\"%d\" y=\"%d\" />", d.getX(), d.getY());
+    }
+
+    @Override
+    public String visitCircle(Circle c) {
+        return String.format(
+                "<circle x=\"%d\" y=\"%d\" radius=\"%d\" />",
+                c.getX(), c.getY(), c.getRadius()
+        );
+    }
+}
+
+public interface Shape {
+    void move(int x, int y);
+    void draw();
+    String accept(Visitor visitor);
+}
+
+public class Dot implements Shape {
+    private int x;
+    private int y;
+
+    public Dot(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    @Override
+    public String accept(Visitor visitor) {
+        return visitor.visitDot(this);
+    }
+}
+
+public class Circle implements Shape {
+    private int x;
+    private int y;
+    private int radius;
+
+    public Circle(int x, int y, int radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+    }
+
+    @Override
+    public String accept(Visitor visitor) {
+        return visitor.visitCircle(this);
+    }
+}
+
+public class Demo {
+    public static void main(String[] args) {
+        Drawing drawing = new Drawing();
+        drawing.addShape(new Dot(1, 10));
+        drawing.addShape(new Circle(10, 20, 30));
+        Visitor xmlExportVisitor = new XMLExportVisitor();
+        System.out.println(xmlExportVisitor.export(drawing));
+    }
+}
+```
 
 [Go Top](#behavioral-patterns-davranışsal-kalıplar)
