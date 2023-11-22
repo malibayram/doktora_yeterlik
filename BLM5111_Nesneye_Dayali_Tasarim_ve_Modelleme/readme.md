@@ -13,6 +13,14 @@
 
 - [UML Cheetsheet 2](https://khalilstemmler.com/articles/uml-cheatsheet/)
 
+## Kalıplar
+
+### [Creational Patterns (Yaratımsal Kalıplar)](creational_patterns.md)
+
+### [Structural Patterns (Yapısal Kalıplar)](structural_patterns.md)
+
+### [Behavioral Patterns (Davranışsal Kalıplar)](behavioral_patterns.md)
+
 ## Kaynaklar
 
 - [Flutter Design Patterns](https://flutterdesignpatterns.com/)

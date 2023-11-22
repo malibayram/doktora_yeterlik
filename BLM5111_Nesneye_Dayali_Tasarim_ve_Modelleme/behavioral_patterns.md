@@ -1,34 +1,12 @@
-### Creational Patterns (Yaratımsal Kalıplar): Nesnelerin nasıl oluşturulacağını tanımlayan kalıplardır.
+### Creational Patterns (Yaratımsal Kalıplar):
+
+> Nesnelerin nasıl oluşturulacağını tanımlayan kalıplardır.
 
 1. **[Factory Method:](#factory-method)** Nesnelerin oluşturulmasını soyutlayan bir kalıptır.
 2. **[Abstract Factory Pattern:](#abstract-factory-pattern)** Birden fazla ilgili nesneyi tek bir çağrıyla oluşturmayı sağlar.
 3. **[Singleton Pattern:](#singleton-pattern)** Bir sınıftan tek bir nesne üretilmesini sağlar.
 4. **[Builder Pattern:](#builder-pattern)** Karmaşık nesnelerin adım adım oluşturulmasını sağlar.
 5. **[Prototype Pattern:](#prototype-pattern)** Var olan bir nesneden, klonlanmış bir nesne oluşturmayı sağlar.
-
-### Structural Patterns (Yapısal Kalıplar): Nesneler arasındaki ilişkileri tanımlayan kalıplardır.
-
-1. **[Adapter Pattern:](#adapter-pattern)** İki uyumsuz arayüz arasında köprü oluşturmayı sağlar.
-2. **Decorator Pattern:** Bir nesnenin yeni özellikler eklemeden davranışını değiştirmeyi sağlar.
-3. **Facade Pattern:** Karmaşık bir sisteme basit bir arayüz sağlar.
-4. **Proxy Pattern:** Bir nesnenin yerine çalışan bir nesne oluşturmayı sağlar.
-5. **Bridge Pattern:** Bir soyutlama ve uygulanması arasında ayrım yapmayı sağlar.
-6. **Composite Pattern:** Nesneleri hiyerarşik bir yapı içinde organize etmeyi sağlar.
-7. **Flyweight Pattern:** Çok sayıda nesne oluşturulması gerektiğinde, bellek kullanımını azaltmak için kullanılan bir kalıptır.
-
-### Behavioral Patterns (Davranışsal Kalıplar): Nesnelerin arasındaki etkileşimi tanımlayan kalıplardır.
-
-1. **Iterator Pattern:** Bir koleksiyonun elemanları üzerinde dolaşmayı sağlayan bir kalıptır.
-2. **Observer Pattern:** Bir nesnenin durumundaki değişiklikleri, diğer nesnelere bildirmeyi sağlayan bir kalıptır.
-3. **Mediator Pattern:** Nesneler arasındaki iletişimi merkezi bir nesne üzerinden yapan bir kalıptır.
-4. **Memento Pattern:** Bir nesnenin durumunu saklamayı ve daha sonra geri yüklemeyi sağlayan bir kalıptır.
-5. **Chain of Responsibility Pattern:** Bir isteğin bir dizi nesne tarafından işlenmesini sağlayan bir kalıptır.
-6. **Command Pattern:** Bir isteği bir nesneye aktarılmasını ve daha sonra nesne tarafından işlenmesini sağlayan bir kalıptır.
-7. **Interpreter Pattern:** Bir dilin ifadelerini yorumlamayı sağlayan bir kalıptır.
-8. **State Pattern:** Bir nesnenin davranışını, durumuna göre değiştiren bir kalıptır.
-9. **Strategy Pattern:** Bir algoritmayı birden fazla nesne tarafından kullanılmasını sağlayan bir kalıptır.
-10. **Template Method Pattern**: Bir algoritmanın iskeletini tanımlayan ve bazı adımların alt sınıflar tarafından uygulanmasını sağlayan bir kalıptır.
-11. **Visitor Pattern:** Bir nesne yapısında dolaşmayı ve her nesne üzerinde bir işlem yapmayı sağlayan bir kalıptır.
 
 #### Factory Method
 
@@ -148,7 +126,7 @@ public class Demo {
 }
 ```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar-nesnelerin-nasıl-oluşturulacağını-tanımlayan-kalıplardır)
+[Go Top](#creational-patterns-yaratımsal-kalıplar)
 
 #### Abstract Factory Pattern
 
@@ -328,7 +306,7 @@ public class Demo {
 }
 ```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar-nesnelerin-nasıl-oluşturulacağını-tanımlayan-kalıplardır)
+[Go Top](#creational-patterns-yaratımsal-kalıplar)
 
 #### Singleton Pattern
 
@@ -369,7 +347,7 @@ public class Demo {
 }
 ```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar-nesnelerin-nasıl-oluşturulacağını-tanımlayan-kalıplardır)
+[Go Top](#creational-patterns-yaratımsal-kalıplar)
 
 #### Builder Pattern
 
@@ -588,7 +566,7 @@ public class Demo {
 }
 ```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar-nesnelerin-nasıl-oluşturulacağını-tanımlayan-kalıplardır)
+[Go Top](#creational-patterns-yaratımsal-kalıplar)
 
 #### Prototype Pattern
 
@@ -702,6 +680,4 @@ public class Demo {
 }
 ```
 
-[Go Top](#creational-patterns-yaratımsal-kalıplar-nesnelerin-nasıl-oluşturulacağını-tanımlayan-kalıplardır)
-
-#### Adapter Pattern
+[Go Top](#creational-patterns-yaratımsal-kalıplar)
