@@ -70,6 +70,8 @@
 
 7.  [Clustering Methods: K-Means](06K-means-clustering.pdf)
 
+    - [K-means Clustering From Scratch In Python [Machine Learning Tutorial]](https://youtu.be/lX-3nGHDhQg)
+
     - Kümeleme:
     - Gözetimsiz öğrenme
     - Etiket yok, ancak veri gerektirir
