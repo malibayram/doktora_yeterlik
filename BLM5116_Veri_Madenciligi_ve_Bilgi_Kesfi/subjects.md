@@ -39,25 +39,26 @@
         - Measures of Classification Performance
 
           - Confusion Matrix:
-            | Actual/Predicted | Positive | Negative |
-            |------------------|----------|----------|
-            | Positive | TP | FN |
-            | Negative | FP | TN |
 
-    "
-    | Measure | Formula | Description |
-    | ----------- | --------------------------------------------- | ----------------------------------------------------------------------------- |
-    | Accuracy | (TP + TN) / (TP + TN + FP + FN) | Proportion of correct predictions among the total number of cases evaluated. |
-    | Error Rate | (FP + FN) / (TP + TN + FP + FN) | Proportion of incorrect predictions among the total number of cases evaluated |
-    | Sensitivity | TP / (TP + FN) | Proportion of positive cases correctly identified |
-    | Specificity | TN / (TN + FP) | Proportion of negative cases correctly identified |
-    | Precision | TP / (TP + FP) | Proportion of positive predictions that are correct |
-    | Recall | TP / (TP + FN) | Proportion of positive cases that are correctly identified |
-    | F-Measure | 2 _ Precision _ Recall / (Precision + Recall) | Harmonic mean of precision and recall |
-    | F1-Score | 2 _ Precision _ Recall / (Precision + Recall) | Harmonic mean of precision and recall |
-    | FP Rate α | FP / (FP + TN) [1 - specifity] | Probability of incorrectly rejecting the null hypothesis |
-    | FN Rate β | FN / (TP + FN) [1 - sensitivity] | Probability of incorrectly accepting the null hypothesis |
-    | Power | 1 - β | Probability of correctly rejecting the null hypothesis |
+    | Actual/Predicted | Positive | Negative |
+    | ---------------- | -------- | -------- |
+    | Positive         | TP       | FN       |
+    | Negative         | FP       | TN       |
+
+    ***
+
+    | Measure     | Formula                                                          | Description                                                                   |
+    | ----------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+    | Accuracy    | (TP + TN) / (TP + TN + FP + FN)                                  | Proportion of correct predictions among the total number of cases evaluated.  |
+    | Error Rate  | (FP + FN) / (TP + TN + FP + FN)                                  | Proportion of incorrect predictions among the total number of cases evaluated |
+    | Sensitivity | TP / (TP + FN)                                                   | Proportion of positive cases correctly identified                             |
+    | Specificity | TN / (TN + FP)                                                   | Proportion of negative cases correctly identified                             |
+    | Precision   | TP / (TP + FP)                                                   | Proportion of positive predictions that are correct                           |
+    | Recall      | TP / (TP + FN)                                                   | Proportion of positive cases that are correctly identified                    |
+    | F1-Score    | $$ 2 \times \frac{Precision \times Recall}{Precision + Recall}$$ | Harmonic mean of precision and recall                                         |
+    | FP Rate α   | FP / (FP + TN) [1 - specifity]                                   | Probability of incorrectly rejecting the null hypothesis                      |
+    | FN Rate β   | FN / (TP + FN) [1 - sensitivity]                                 | Probability of incorrectly accepting the null hypothesis                      |
+    | Power       | 1 - β                                                            | Probability of correctly rejecting the null hypothesis                        |
 
         - X, sınıf etiketi bilinmeyen bir veri örneği olsun.
         - H, veri örneğinin belirli bir sınıfa C ait olduğu hipotezidir.
