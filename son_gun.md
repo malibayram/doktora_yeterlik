@@ -568,3 +568,154 @@ graph LR
   - Hierarchical Clustering
 - Association Rule Mining
   - Apriori Algorithm
+
+[Başa Git](#5-veri-madenciliği-ve-bilgi-keşfi)
+
+## 6. Veri Sıkıştırma
+
+- Entropi: Bir sistemin düzensizliğini ölçen bir niceliktir. Entropi değeri ne kadar yüksekse düzensizlik o kadar fazladır. Entropi değeri ne kadar düşükse düzen o kadar fazladır. Entropi değeri 0 ise düzen en fazladır.
+- Shannon Entropisi: $$ H(X) = - \sum_i^{n} p(x_i) log_2 p(x_i) $$
+
+- Hata Bulma ve Düzeltme
+  - Parity Bit
+  - Checksum
+  - CRC (Cyclic Redundancy Check)
+- Veri Sıkıştırma
+
+  - Kayıpsız Sıkıştırma
+
+    - Huffman Kodlama
+      - Ağaç yapısı oluşturulur.
+      - Ağaç yapısında en çok kullanılan karakterler en üstte olacak şekilde yerleştirilir.
+      - Ağaç yapısında en çok kullanılan karakterlerin kodları en kısa olacak şekilde oluşturulur.
+      - Sıkıştırma işleminin olabileceği en yüksek oran: $$ \frac{H(X)}{H(X) + 1} $$
+      - Redundancy: $$ 1 - \frac{H(X)}{H(X) + 1} $$
+    - Shannon-Fano Kodlama
+    - LZW (Lempel-Ziv-Welch) Kodlama
+    - Arithmetic Coding
+
+  - Kayıplı Sıkıştırma
+    - JPEG
+      1. Renk uzayına dönüştürme
+      2. Renk uzayında örnekleme
+      3. Örnekleme sonrası renk uzayında dönüşüm
+      4. Renk uzayında dönüşüm sonrası blok oluşturma
+      5. Blok oluşturma sonrası DCT (Discrete Cosine Transform) işlemi
+      6. DCT işlemi sonrası kuantalama
+      7. Kuantalama sonrası zigzag tarama
+      8. Zigzag tarama sonrası RLE (Run Length Encoding)
+      9. RLE sonrası Huffman kodlama
+    - MPEG
+    - MP3
+    - AAC
+    - H.264
+    - H.265
+    - VP9
+    - AV1
+
+- İstatistiksel Yöntemler ve Sözlük Tabanlı Yöntemler arasındaki temel farklar; istatistiksel yöntemlerde sıkıştırma işlemi için bir sözlük oluşturulurken, sözlük tabanlı yöntemlerde sıkıştırma işlemi için bir sözlük oluşturulmaz. Halihazırda var olan bir sözlük kullanılır. Bu sözlükteki kelimelerin sıkıştırma işlemi için kullanılmasıdır.
+- MD5 (Message Digest 5): 128 bit uzunluğunda bir hash değeridir. Bir dosyanın MD5 değeri hesaplanarak, dosyanın bütünlüğü kontrol edilebilir.
+
+[Başa Git](#6-veri-sıkıştırma)
+
+## 7. İleri Bilgisayar Mimarisi
+
+- Von Neumann Mimarisi
+  - CPU
+  - Memory
+  - Input/Output
+- Harvard Mimarisi
+  - CPU
+  - Memory
+  - Input/Output
+  - Program Memory
+- İşlemci Çeşitleri
+
+  - CISC (Complex Instruction Set Computer)
+  - RISC (Reduced Instruction Set Computer)
+
+  | CISC                        | RISC                     |
+  | --------------------------- | ------------------------ |
+  | Komut seti karmaşık         | Komut seti basit         |
+  | Komutlar değişken uzunlukta | Komutlar sabit uzunlukta |
+  | Çok sayıda komut            | Az sayıda komut          |
+  | Çok sayıda adresleme modu   | Az sayıda adresleme modu |
+
+- Amdahl Yasası: Bir programın çalışma süresi, programın çalışma süresinin en yavaş olan kısmı kadar hızlanır. $$ T_n = T_o x (1 - p) + \frac{T_o}{S} x p $$
+
+  - T<sub>n</sub>: Yeni program çalışma süresi
+  - T<sub>o</sub>: Eski program çalışma süresi
+  - p: Programın paralelleştirilebilirlik oranı
+  - S: Paralelleştirme oranı
+
+- Adresleme Modları
+
+  - Register
+  - Immediate
+  - Direct
+  - Indirect
+  - Indexed
+  - Base-Relative
+  - Stack
+  - Autoincrement
+  - Autodecrement
+  - PC-Relative
+  - Relative
+  - Absolute
+
+- Cache Hiyerarşisi
+
+  - L1 Cache
+  - L2 Cache
+  - L3 Cache
+  - Main Memory
+
+- Komut Satırı Yapısı
+
+  - Komut
+  - Operand
+  - Operatör
+
+- Tag, Line, Word
+
+- Cache Mapping
+
+  - Direct Mapping
+  - Associative Mapping
+  - Set Associative Mapping
+
+- Pipeline
+
+  - Fetch
+  - Decode
+  - Execute
+  - Memory
+  - Write Back
+
+- Assembly
+
+  - ADD
+  - SUB
+  - MUL
+  - DIV
+  - MOV
+  - CMP
+  - JMP
+  - JZ
+  - JNZ
+  - JG
+  - JGE
+  - JL
+  - JLE
+  - CALL
+  - RET
+  - PUSH
+  - POP
+
+- Adresleme Modları
+
+  - Register
+  - Immediate
+  - Direct
+  - Indirect
+  - PC-Relative
