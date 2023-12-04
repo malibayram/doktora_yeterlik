@@ -6,11 +6,11 @@
 
 # [Nesneye Dayalı Tasarım ve Modelleme](#4-nesneye-dayalı-tasarım-ve-modelleme)
 
-# Veri Madenciliği ve Bilgi Keşfi
+# [Veri Madenciliği ve Bilgi Keşfi](#5-veri-madenciliği-ve-bilgi-keşfi)
 
-# Veri Sıkıştırma
+# [Veri Sıkıştırma](#6-veri-sıkıştırma)
 
-# İleri Bilgisayar Mimarisi
+# [İleri Bilgisayar Mimarisi](#7-i̇leri-bilgisayar-mimarisi)
 
 ## 1. Doğal Dil İşlemeye Kavramsal Bir Bakış
 
@@ -719,3 +719,5 @@ graph LR
   - Direct
   - Indirect
   - PC-Relative
+
+  [Başa Git](#7-i̇leri-bilgisayar-mimarisi)
