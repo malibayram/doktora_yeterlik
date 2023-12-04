@@ -383,6 +383,7 @@ graph LR
     - Middle Man
     - Message Chains
 - Refactoring Techniques
+
   - Composing Methods
     - Extract Method
     - Inline Method
@@ -506,11 +507,64 @@ graph LR
     - Replace Type Code with State/Strategy
     - Replace Subclass with Fields
     - Extract Interface
-    - Collapse Hierarchy
-    - Form Template Method
-    - Replace Inheritance with Delegation
-    - Replace Delegation with Inheritance
-    - Replace Type Code with Class
-    - Replace Type Code with Subclasses
-    - Replace Type Code with State/Strategy
-    - Replace Subclass with Fields
+
+- Creational Design Patterns
+  - Abstract Factory
+  - Builder
+  - Factory Method
+  - Prototype
+  - Singleton
+- Structural Design Patterns
+  - Adapter
+  - Bridge
+  - Composite
+  - Decorator
+  - Facade
+  - Flyweight
+  - Proxy
+- Behavioral Design Patterns
+  - Chain of Responsibility
+  - Command
+  - Interpreter
+  - Iterator
+  - Mediator
+  - Memento
+  - Observer
+  - State
+  - Strategy
+  - Template Method
+  - Visitor
+
+[Başa Git](#4-nesneye-dayalı-tasarım-ve-modelleme)
+
+## 5. Veri Madenciliği ve Bilgi Keşfi
+
+- Preprocessing
+  - Data Cleaning
+    - Missing Values
+    - Noisy Data
+    - Outliers
+  - Data Integration
+  - Data Transformation
+    - Normalization
+      - Min-Max Normalization
+      - Z-Score Normalization
+      - Decimal Scaling
+      - Binning
+    - Aggregation
+    - Generalization
+    - Discretization
+  - Data Reduction
+    - Feature Selection
+    - Feature Extraction
+      - Principal Component Analysis (PCA)
+- Classification
+  - Decision Tree
+  - Naive Bayes
+  - K-Nearest Neighbors (KNN)
+  - Support Vector Machine (SVM)
+- Clustering
+  - K-Means
+  - Hierarchical Clustering
+- Association Rule Mining
+  - Apriori Algorithm
