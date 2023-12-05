@@ -36,14 +36,12 @@
 
 6.  [Statistical Classification Methods, Naïve Bayesian Classification](04NaiveBayes.pdf)
 
-        - Measures of Classification Performance
-
-          - Confusion Matrix:
-
-    | Actual/Predicted | Positive | Negative |
-    | ---------------- | -------- | -------- |
-    | Positive         | TP       | FN       |
-    | Negative         | FP       | TN       |
+    - Measures of Classification Performance
+      - Confusion Matrix:
+        | Actual/Predicted | Positive | Negative |
+        | ---------------- | -------- | -------- |
+        | Positive | TP | FN |
+        | Negative | FP | TN |
 
     ***
 
